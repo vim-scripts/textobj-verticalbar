@@ -1,0 +1,32 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2679
+
+textobj-verticalbar is a Vim plugin to provide text objects to select wiki's table cell.
+
+For example, if the content of a buffer as follows:
+(here "*" means the cursor)
+
+	|| Header 1*|| Header 2 || Header 3 ||
+	|| Row1 || Cell1-2 || Cell1-3 ||
+	|| Row2 || Cell2-2 || Cell2-3 ||
+
+
+|<Plug>(textobj-verticalbar-a)| will select columns as follows:
+(here "<" and ">" indicates the selected range)
+
+	||<Header 1>|| Header 2 || Header 3 ||
+	|| Row1 || Cell1-2 || Cell1-3 ||
+	|| Row2 || Cell2-2 || Cell2-3 ||
+
+|<Plug>(textobj-verticalbar-i)| will select columns as follows:
+(here "<" and ">" indicates the selected range)
+
+	|<| Header 1 |>| Header 2 || Header 3 ||
+		--------- 
+	|| Row1 || Cell1-2 || Cell1-3 ||
+	|| Row2 || Cell2-2 || Cell2-3 ||
+
+Requirements:
+- Vim 7.2 or later
+- textobj-user 0.3.7 or later (vimscript#2100)
+
+

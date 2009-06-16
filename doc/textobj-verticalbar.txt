@@ -1,0 +1,113 @@
+ textobj-verticalbar.txt		Text objects for vetical bar('|').
+
+Version 0.0.2
+Copyright (C) 2009 ampmmn <http://d.hatena.ne.jp/ampmmn>
+
+
+CONTENTS				         *textobj-verticalbar-contents*
+
+Introduction		|textobj-verticalbar-introduction|
+Interface		|textobj-verticalbar-interface|
+  Mappings		  |textobj-verticalbar-mappings|
+Custmizing		|textobj-verticalbar-customizing|
+Bugs			|textobj-verticalbar-bugs|
+Changelog		|textobj-verticalbar-changelog|
+
+==============================================================================
+INTRODUCTION				    *textobj-verticalbar-introduction*
+
+|textobj-verticalbar| is a Vim plugin to provide text objects to select wiki's
+table cell(such as moinmoin,pukiwiki).
+
+For example, if the content of a buffer as follows:
+(here "*" means the cursor)
+
+	|| Header1*|| Header2 || Header3 ||
+	|| Row1 || Cell1-2 || Cell1-3 ||
+	|| Row2 || Cell2-2 || Cell2-3 ||
+
+
+|<Plug>(textobj-verticalbar-a)| will select cell as follows:
+(here "-" indicates the selected range)
+
+	|| Header1 || Header2 || Header3 ||
+	 -----------
+	|| Row1 || Cell1-2 || Cell1-3 ||
+	|| Row2 || Cell2-2 || Cell2-3 ||
+
+|<Plug>(textobj-verticalbar-i)| will select cell as follows:
+(here "-" indicates the selected range)
+
+	|| Header1 || Header2 || Header3 ||
+	  --------- 
+	|| Row1 || Cell1-2 || Cell1-3 ||
+	|| Row2 || Cell2-2 || Cell2-3 ||
+
+
+Requirements:
+- Vim 7.2 or later
+- |textobj-user| 0.3.7 or later (vimscript#2100)
+
+
+==============================================================================
+INTERFACE					*textobj-verticalbar-interface*
+
+------------------------------------------------------------------------------
+MAPPINGS					*textobj-verticalbar-mappings*
+
+These key mappings are defined in Visual mode and Operator-pending mode.
+
+<Plug>(textobj-verticalbar-a)			*<Plug>(textobj-verticalbar-a)*
+			Select a cell of table(inner text).
+
+<Plug>(textobj-verticalbar-i)			*<Plug>(textobj-verticalbar-i)*
+			Select a cell of table(include vertilcal bar).
+
+==============================================================================
+CUSTOMIZING				     *textobj-verticalbar-customizing*
+
+			       *g:textobj_verticalbar_no_default_key_mappings*
+				       *:TextobjverticalbarDefaultKeyMappings*
+This plugin will define the following key mappings in Visual mode and
+Operator-pending mode automatically.  If you don't want these key mappings,
+define |g:textobj_verticalbar_no_default_key_mappings| before this plugin is loaded
+(e.g. in your |vimrc|).  You can also use |:TextobjverticalbarDefaultKeyMappings|
+to redefine these key mappings.  This command doesn't override existing {lhs}s
+unless [!] is given.
+
+	{lhs}	{rhs}			~
+	-----	----------------------	~
+	av	<Plug>(textobj-verticalbar-a)
+	a|	<Plug>(textobj-verticalbar-a)
+	iv	<Plug>(textobj-verticalbar-i)
+	i|	<Plug>(textobj-verticalbar-i)
+
+
+==============================================================================
+BUGS						*textobj-verticalbar-bugs*
+
+- The current selection is not extended like |aw| nor |ip|
+  whenever |<Plug>(textobj-verticalbar-a)| or |<Plug>(textobj-verticalbar-i)| is
+  repeated in Visual mode.
+
+- So that [count] is just ignored.
+
+==============================================================================
+THANKS
+
+Thanks to Kana Natsuno, the author of textobj-user script(vimscript#2100).
+This document was derived from his textobj-indent document.
+
+==============================================================================
+CHANGELOG				       *textobj-verticalbar-changelog*
+
+0.0.2	2009-05-27
+	- Fix the bug to calculate verticalbaration levels.  Now these text objects
+	  target a set of lines with the same verticalbaration as you see.
+
+0.0.1	2009-05-26
+	- Initial version.
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:fen:fdl=0:fdm=marker:
+
