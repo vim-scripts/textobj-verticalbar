@@ -1,5 +1,5 @@
 " textobj-verticalbar - Text objects for vertical bar.
-" Version: 0.0.2
+" Version: 0.0.3
 " Author: ampmmn(htmnymgw <delete>@<delete> gmail.com)
 " URL: http://d.hatena.ne.jp/ampmmn
 " License: MIT license  {{{
@@ -24,7 +24,8 @@
 " }}}
 " ----
 " history
-"	 0.0.2	2009-05-27	Change action, when a text under the cursor is '|'.
+"	 0.0.3	2009-09-17	Fixed bug with multi-byte characters.
+"	 0.0.2	2009-05-27	Change behavior when a text under the cursor is '|'.
 "	 0.0.1	2009-05-26	initial release.
 " ----
 
@@ -46,27 +47,52 @@ call textobj#user#plugin('verticalbar', {
 
 " Misc.  "{{{
 
-function! s:select(offset) "{{{
-	let lnum = line('.')
-	let s = searchpos('|', 'bcn', lnum)
-	let e = searchpos('|', 'cn', lnum)
-	if s[1] == e[1]
-		return 0
+function! s:get_vb_pos(lnum) "{{{
+	return [searchpos('|', 'bcn', a:lnum), searchpos('|', 'cn', a:lnum)]
+endfunction "}}}
+
+function! s:searchpos_from(pattern, flag, from) "{{{
+	if a:from == [0,0]
+		return [0,0]
 	endif
-	return ['v'
-	\, [ 0, lnum, s[1] <= 0    ? 1                 : s[1] + a:offset, 0]
-	\, [ 0, lnum, e[1] <= s[1] ? len(getline('.')) : e[1] - a:offset, 0]
-	\]
+	let cpos = getpos('.')
+	call setpos('.', [0, a:from[0], a:from[1],0])
+	let s = searchpos('.', a:flag, a:from[0])
+	call setpos('.', cpos)
+	return s
 endfunction "}}}
 
 " exclude vertical bar itself.
 function! s:select_i()  "{{{
-	return s:select(1)
+	let lnum = line('.')
+	let [s,e] = s:get_vb_pos(lnum)
+	if s == e
+		return 0
+	endif
+	let s = s:searchpos_from('.', '', s)
+	if s == e
+		return 0
+	endif
+	if e != [0,0]
+		let e = s:searchpos_from('.', 'b', e)
+	endif
+	return ['v'
+	\, [ 0, lnum, s[1] <= 0    ? 1                : s[1], 0]
+	\, [ 0, lnum, e[1] < s[1] ? len(getline('.')) : e[1], 0]
+	\]
 endfunction "}}}
 
 " include vertical bar itself.
 function! s:select_a()  "{{{
-	return s:select(0)
+	let lnum = line('.')
+	let [s,e] = s:get_vb_pos(lnum)
+	if s == e
+		return 0
+	endif
+	return ['v'
+	\, [ 0, lnum, s[1] <= 0    ? 1                 : s[1], 0]
+	\, [ 0, lnum, e[1] <= s[1] ? len(getline('.')) : e[1], 0]
+	\]
 endfunction "}}}
 
 "}}}

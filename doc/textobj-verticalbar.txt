@@ -1,6 +1,6 @@
  textobj-verticalbar.txt		Text objects for vetical bar('|').
 
-Version 0.0.2
+Version 0.0.3
 Copyright (C) 2009 ampmmn <http://d.hatena.ne.jp/ampmmn>
 
 
@@ -96,10 +96,14 @@ BUGS						*textobj-verticalbar-bugs*
 THANKS
 
 Thanks to Kana Natsuno, the author of textobj-user script(vimscript#2100).
-This document was derived from his textobj-indent document.
+This document was derived from his textobj-indent(vimscript#2484) document.
 
 ==============================================================================
 CHANGELOG				       *textobj-verticalbar-changelog*
+
+
+0.0.3	2009-09-17
+	- Fixed bug with multi-byte characters.
 
 0.0.2	2009-05-27
 	- Fix the bug to calculate verticalbaration levels.  Now these text objects
